@@ -6,9 +6,36 @@
   <title>Document</title>
 </head>
 <body>
+  <div class="btns">
+    <button class="rock">Rock</button>
+    <button class="paper">Paper</button>
+    <button class="scissors">Scissors</button>
+  </div>
+  <div class="results"></div>
+
+
+
   <script>
 
+    let humanChoice;
+    let computerChoice;
+    let humanScore = 0;
+    let computerScore = 0;
 
+    const results = document.querySelector(".results");
+    const rock = document.querySelector(".rock");
+    const paper = document.querySelector(".paper");
+    const scissors = document.querySelector(".scissors");
+    const btns = document.querySelector(".btns");
+
+    
+
+    function showResults(){
+      let winner = humanScore > computerScore ? 
+        "human": "computer";
+      results.textContent = `The winner is ${winner}!! 
+        You: ${humanScore}    Computer: ${computerScore}`;
+    }
 
     function getComputerChoice(){
       let randomNumber = Math.random();
@@ -21,62 +48,59 @@
       }
     }
 
-    function getHumanChoice(){
-      return prompt("Choose: rock, paper or scissors").toLowerCase();
-    }
-
-
-    
-    function playGame(){
-      let humanScore = 0;
-      let computerScore = 0;
-
-      function playRound(humanChoice, computerChoice){
-        if (humanChoice === computerChoice){
-          console.log("It's a tie!");
-          return;
-        } else if (humanChoice === "rock"){
-          if (computerChoice === "paper"){
-            console.log("You lose! Paper beats Rock");
-            humanScore++;
-            return;
-          } else{
-            console.log("You win! Rock beats Scissors");
-            computerScore++;
-            return;
-          }
-        } else if (humanChoice === "paper"){
-          if (computerChoice === "scissors"){
-            console.log("You lose! Scissors beats Paper");
-            humanScore++;
-            return;
-          } else{
-            console.log("You win! Paper beats Rock");
-            computerScore++;
-            return;
-          }
+    function playRound(humanChoice, computerChoice){
+      if (humanChoice === computerChoice){
+         results.textContent = "It's a tie!";
+      } else if (humanChoice === "rock"){
+        if (computerChoice === "paper"){
+          results.textContent = "You lose! Paper beats Rock";
+          computerScore++;
         } else{
-          if (computerChoice === "rock"){
-            console.log("You lose! Rock beats Scissors");
-            humanScore++;
-            return;
-          } else{
-            console.log("You win! Scissors beats Paper");
-            computerScore++;
-            return;
-          }
+          results.textContent = "You win! Rock beats Scissors";
+          humanScore++;
+        }
+      } else if (humanChoice === "paper"){
+        if (computerChoice === "scissors"){
+          results.textContent = "You lose! Scissors beats paper";
+          computerScore++;
+        } else{
+          results.textContent = "You win! Paper beats Rock";
+          humanScore++;
+        }
+      } else{
+        if (computerChoice === "rock"){
+          results.textContent = "You lose! Rock beats Scissors";
+          computerScore++;
+        } else{
+          results.textContent = "You win! Scissors beats Paper";
+          humanScore++;
         }
       }
-      
-      let humanChoice;
-      let computerChoice;
-      for (let i = 0; i < 5; i++){
-        computerChoice = getComputerChoice();
-        humanChoice = getHumanChoice();
-        playRound(humanChoice, computerChoice);
+      if (humanScore === 5 || computerScore === 5){
+        showResults();
       }
-
     }
+
+    btns.addEventListener("click", (event) => {
+      let target = event.target;
+      switch (target.className){
+        case "rock":
+          computerChoice = getComputerChoice();
+          humanChoice = "rock";
+          playRound(humanChoice, computerChoice);
+          break;
+        case "paper":
+          computerChoice = getComputerChoice();
+          humanChoice = "paper";
+          playRound(humanChoice, computerChoice);
+          break;
+        case "scissors":
+          computerChoice = getComputerChoice();
+          humanChoice = "scissors";
+          playRound(humanChoice, computerChoice);
+          break;
+      }
+    });
 
 
   </script>
